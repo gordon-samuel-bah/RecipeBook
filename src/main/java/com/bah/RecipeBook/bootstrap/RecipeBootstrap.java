@@ -4,6 +4,7 @@ import com.bah.RecipeBook.domain.*;
 import com.bah.RecipeBook.repositories.CategoryRepository;
 import com.bah.RecipeBook.repositories.RecipeRepository;
 import com.bah.RecipeBook.repositories.UnitOfMeasureRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Component
 public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
@@ -29,6 +31,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         recipeRepository.saveAll(getRecipes());
+        log.debug("Loading Boostrap Data");
     }
 
     private List<Recipe> getRecipes() {
@@ -126,7 +129,9 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         tacoRecipe.setPrepTime(20);
         tacoRecipe.setDifficulty(Difficulty.MODERATE);
         tacoRecipe.setDirections("Zero chance taco directions");
-        Notes tacoNote = new Notes(tacoRecipe, "Also zero chance taco notes");
+        Notes tacoNote = new Notes();
+        tacoNote.setRecipe(tacoRecipe);
+        tacoNote.setRecipeNotes("Also zero chance taco notes");
         tacoRecipe.setNotes(tacoNote);
 
         tacoRecipe.addIngredient(new Ingredient("Chili Powder", new BigDecimal(2), tablespoonUom));
