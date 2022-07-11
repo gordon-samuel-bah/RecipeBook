@@ -17,16 +17,15 @@ public class UnitOfMeasureCommandToUnitOfMeasureTest {
     @BeforeEach
     public void setUp() throws Exception {
         converter = new UnitOfMeasureCommandToUnitOfMeasure();
-
     }
 
     @Test
-    public void testNullParamter() throws Exception {
+    public void testNullParamter() {
         assertNull(converter.convert(null));
     }
 
     @Test
-    public void testEmptyObject() throws Exception {
+    public void testEmptyObject() {
         assertNotNull(converter.convert(new UnitOfMeasureCommand()));
     }
 

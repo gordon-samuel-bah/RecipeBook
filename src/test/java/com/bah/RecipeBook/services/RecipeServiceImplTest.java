@@ -1,5 +1,7 @@
 package com.bah.RecipeBook.services;
 
+import com.bah.RecipeBook.converters.RecipeCommandToRecipe;
+import com.bah.RecipeBook.converters.RecipeToRecipeCommand;
 import com.bah.RecipeBook.domain.Recipe;
 import com.bah.RecipeBook.repositories.RecipeRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,7 +27,7 @@ class RecipeServiceImplTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        recipeService = new RecipeServiceImpl(recipeRepository);
+        recipeService = new RecipeServiceImpl(recipeRepository, null, null);
     }
 
     @Test
