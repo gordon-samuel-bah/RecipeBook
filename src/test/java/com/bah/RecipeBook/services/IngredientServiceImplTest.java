@@ -1,7 +1,9 @@
 package com.bah.RecipeBook.services;
 
 import com.bah.RecipeBook.commands.IngredientCommand;
+import com.bah.RecipeBook.converters.IngredientCommandToIngredient;
 import com.bah.RecipeBook.converters.IngredientToIngredientCommand;
+import com.bah.RecipeBook.converters.UnitOfMeasureCommandToUnitOfMeasure;
 import com.bah.RecipeBook.converters.UnitOfMeasureToUnitOfMeasureCommand;
 import com.bah.RecipeBook.domain.Ingredient;
 import com.bah.RecipeBook.domain.Recipe;
@@ -34,7 +36,9 @@ class IngredientServiceImplTest {
     public void setUp () {
         MockitoAnnotations.openMocks(this);
 
-        ingredientService = new IngredientServiceImpl(ingredientToIngredientCommand, recipeRepository);
+        ingredientService = new IngredientServiceImpl(ingredientToIngredientCommand,
+                new IngredientCommandToIngredient(new UnitOfMeasureCommandToUnitOfMeasure()),
+                recipeRepository, null);
     }
 
     @Test
@@ -63,5 +67,27 @@ class IngredientServiceImplTest {
         assertEquals(3L, ingredientCommand.getId());
         assertEquals(1L, ingredientCommand.getRecipeId());
         verify(recipeRepository, times(1)).findById(anyLong());
+    }
+
+    @Test
+    public void testSaveRecipeCommand() {
+        IngredientCommand command = new IngredientCommand();
+        command.setId(3L);
+        command.setRecipeId(2L);
+
+        Optional<Recipe> recipeOptional = Optional.of(new Recipe());
+
+        Recipe savedRecipe = new Recipe();
+        savedRecipe.addIngredient(new Ingredient());
+        savedRecipe.getIngredients().iterator().next().setId(3L);
+
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+        when((recipeRepository.save(any()))).thenReturn(savedRecipe);
+
+        IngredientCommand savedCommand = ingredientService.saveIngredientCommand(command);
+
+        assertEquals(3L, savedCommand.getId());
+        verify(recipeRepository, times(1)).findById(anyLong());
+        verify(recipeRepository, times(1)).save(any(Recipe.class));
     }
 }
