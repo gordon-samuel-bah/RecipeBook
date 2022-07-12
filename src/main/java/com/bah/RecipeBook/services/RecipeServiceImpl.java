@@ -8,6 +8,7 @@ import com.bah.RecipeBook.repositories.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Optional;
@@ -55,5 +56,11 @@ public class RecipeServiceImpl implements RecipeService{
         Recipe savedRecipe = recipeRepository.save(detatchedRecipe);
         log.debug("Saved recipe ID: " + savedRecipe.getId());
         return recipeToRecipeCommand.convert(savedRecipe);
+    }
+
+    @Override
+    @Transactional
+    public RecipeCommand findCommandById(Long id) {
+        return recipeToRecipeCommand.convert(findById(id));
     }
 }
