@@ -1,6 +1,8 @@
 package com.bah.RecipeBook.controllers;
 
 import com.bah.RecipeBook.commands.IngredientCommand;
+import com.bah.RecipeBook.commands.RecipeCommand;
+import com.bah.RecipeBook.commands.UnitOfMeasureCommand;
 import com.bah.RecipeBook.services.IngredientService;
 import com.bah.RecipeBook.services.RecipeService;
 import com.bah.RecipeBook.services.UnitOfMeasureService;
@@ -42,6 +44,22 @@ public class IngredientController {
                 ingredientService.findByRecipeIdAndIngredientId(Long.parseLong(recipeId), Long.parseLong(id)));
 
         return "/recipe/ingredient/show";
+    }
+
+    @GetMapping
+    @RequestMapping("/recipe/{recipeId}/ingredient/new")
+    public String newRecipe(@PathVariable String recipeId, Model model) {
+        RecipeCommand recipeCommand = recipeService.findCommandById(Long.parseLong(recipeId));
+
+        IngredientCommand ingredientCommand = new IngredientCommand();
+        ingredientCommand.setRecipeId(Long.parseLong(recipeId));
+        model.addAttribute("ingredient", ingredientCommand);
+
+        ingredientCommand.setUom(new UnitOfMeasureCommand());
+
+        model.addAttribute("uomList", unitOfMeasureService.listAllUoms());
+
+        return "/recipe/ingredient/ingredientform";
     }
 
     @GetMapping
