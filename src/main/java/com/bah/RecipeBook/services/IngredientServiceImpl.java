@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -91,5 +92,16 @@ public class IngredientServiceImpl implements IngredientService{
 
             return ingredientToIngredientCommand.convert(savedIngredientOptional.get());
         }
+    }
+
+    @Override
+    public void deleteByRecipeAndIngredientId(long recipeId, long id) {
+        Recipe recipe = recipeRepository.findById(recipeId).get();
+        Set<Ingredient> ingredients = recipe.getIngredients();
+        Ingredient toRemove = recipe.getIngredients().stream().filter(ingredient -> ingredient.getId()
+                .equals(id)).findFirst().get();
+        toRemove.setRecipe(null);
+        recipe.getIngredients().remove(toRemove);
+        recipeRepository.save(recipe);
     }
 }
