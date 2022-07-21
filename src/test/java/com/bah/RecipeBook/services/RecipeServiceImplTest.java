@@ -1,9 +1,10 @@
 package com.bah.RecipeBook.services;
 
-import com.bah.RecipeBook.converters.RecipeCommandToRecipe;
-import com.bah.RecipeBook.converters.RecipeToRecipeCommand;
+
 import com.bah.RecipeBook.domain.Recipe;
+import com.bah.RecipeBook.exceptions.NotFoundException;
 import com.bah.RecipeBook.repositories.RecipeRepository;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -67,5 +68,17 @@ class RecipeServiceImplTest {
         recipeService.deleteById(idToDelete);
 
         verify(recipeRepository, times(1)).deleteById(anyLong());
+    }
+
+    @Test
+    public void getRecipeByIdTestNotFound() throws Exception{
+        Optional<Recipe> recipeOptional = Optional.empty();
+
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+
+        assertThrows(NotFoundException.class, () -> {
+            recipeService.findById(1L);
+        });
+
     }
 }

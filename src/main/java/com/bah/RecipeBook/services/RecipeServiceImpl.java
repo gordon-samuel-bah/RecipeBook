@@ -4,11 +4,11 @@ import com.bah.RecipeBook.commands.RecipeCommand;
 import com.bah.RecipeBook.converters.RecipeCommandToRecipe;
 import com.bah.RecipeBook.converters.RecipeToRecipeCommand;
 import com.bah.RecipeBook.domain.Recipe;
+import com.bah.RecipeBook.exceptions.NotFoundException;
 import com.bah.RecipeBook.repositories.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Optional;
@@ -42,7 +42,8 @@ public class RecipeServiceImpl implements RecipeService{
         Optional<Recipe> recipeOptional = recipeRepository.findById(id);
 
         if (recipeOptional.isEmpty()) {
-            throw new RuntimeException("Recipe not found");
+            //throw new RuntimeException("Recipe not found");
+            throw new NotFoundException("Recipe not found");
         }
 
         return recipeOptional.get();

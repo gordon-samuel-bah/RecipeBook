@@ -3,14 +3,12 @@ package com.bah.RecipeBook.services;
 import com.bah.RecipeBook.commands.UnitOfMeasureCommand;
 import com.bah.RecipeBook.converters.UnitOfMeasureToUnitOfMeasureCommand;
 import com.bah.RecipeBook.repositories.UnitOfMeasureRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-@Slf4j
 @Service
 public class UnitOfMeasureServiceImpl implements UnitOfMeasureService{
 

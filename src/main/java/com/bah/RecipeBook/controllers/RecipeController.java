@@ -7,8 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.rmi.MarshalledObject;
-
 @Slf4j
 @Controller
 public class RecipeController {
@@ -18,34 +16,34 @@ public class RecipeController {
         this.recipeService = recipeService;
     }
 
-    @PostMapping({"/recipe/{id}/show"})
+    @GetMapping({"/recipe/{id}/show"})
     public String showById(@PathVariable String id, Model model) {
         model.addAttribute("recipe", recipeService.findById(Long.parseLong(id)));
 
         return "recipe/show";
     }
 
-    @PostMapping("recipe/new")
+    @GetMapping("/recipe/new")
     public String newRecipe(Model model) {
         model.addAttribute("recipe", new RecipeCommand());
 
         return "recipe/recipeform";
     }
 
-    @PostMapping("recipe/{id}/update")
+    @GetMapping("/recipe/{id}/update")
     public String updateRecipe(@PathVariable String id, Model model) {
         model.addAttribute("recipe", recipeService.findCommandById(Long.parseLong(id)));
         return "recipe/recipeform";
     }
 
-    @PostMapping("recipe")
+    @PostMapping("/recipe")
     public String saverOrUpdate(@ModelAttribute RecipeCommand command) {
         RecipeCommand savedCommand = recipeService.saveRecipeCommand(command);
 
         return "redirect:/recipe/" + savedCommand.getId() + "/show";
     }
 
-    @PostMapping("/recipe/{id}/delete")
+    @GetMapping("/recipe/{id}/delete")
     public String deleteById(@PathVariable String id) {
         log.debug("Deleteing id: " + id);
 

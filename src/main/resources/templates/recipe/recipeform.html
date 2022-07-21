@@ -65,8 +65,14 @@
                                 </div>
                                 <div class="col-md-3 form-group">
                                     <label>Difficulty:</label>
-                                    <select class="form-control">
-                                        <option>Easy</option>
+                                    <select class="form-control" th:field="*{difficulty}">
+                                        <option th:each="difficultyValue : ${T(com.bah.RecipeBook.domain.Difficulty).values()}"
+                                                th:value="{$difficultyValue.name()}"
+                                                th:text="{$difficultyValue.name()}"
+                                        >Val</option>
+                                    </select>
+                                    <select>
+                                        <option class="form-control" th:remove="all">Easy</option>
                                         <option>Medium</option>
                                         <option>Hard</option>
                                     </select>
